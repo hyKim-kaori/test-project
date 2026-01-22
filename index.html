@@ -3,519 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌡️ 교실 환기 알리미 시뮬레이션</title>
+    <title>교실 환기 알리미 시뮬레이션</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
-            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
-            background: linear-gradient(to bottom, #e0f2fe, #c7d2fe);
+            font-family: 'Pretendard', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            margin: 0;
         }
-        
         .container {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        /* 헤더 */
-        .header {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 90%;
             text-align: center;
-            margin-bottom: 30px;
         }
-        
-        .header h1 {
-            font-size: 2rem;
-            color: #1e3a5f;
-            margin-bottom: 8px;
-        }
-        
-        .header p {
-            color: #64748b;
-            font-size: 1rem;
-        }
-        
-        .badge {
+        h1 { margin-top: 0; color: #333; font-size: 1.5rem; }
+        .subtitle { color: #666; font-size: 0.9rem; margin-bottom: 20px; }
+        .tag {
+            background-color: #e3f2fd;
+            color: #1565c0;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
             display: inline-block;
-            background: #dbeafe;
-            color: #1d4ed8;
-            font-size: 0.85rem;
-            padding: 6px 14px;
-            border-radius: 20px;
-            margin-top: 10px;
-        }
-        
-        /* 메인 카드 */
-        .main-card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            padding: 30px;
             margin-bottom: 20px;
+            font-weight: bold;
         }
         
-        /* 알고리즘 박스 */
+        /* 알고리즘 설명 박스 */
         .algorithm-box {
-            background: #fefce8;
-            border: 1px solid #fde047;
-            border-radius: 12px;
-            padding: 16px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: left;
             margin-bottom: 25px;
-        }
-        
-        .algorithm-box h3 {
-            color: #a16207;
-            font-size: 1rem;
-            margin-bottom: 10px;
-        }
-        
-        .algorithm-box .code {
-            font-family: 'Consolas', monospace;
-            background: #f5f5f5;
-            padding: 2px 6px;
-            border-radius: 4px;
             font-size: 0.9rem;
         }
-        
-        .algorithm-box p {
-            color: #374151;
-            margin: 6px 0;
-            font-size: 0.95rem;
+        .algorithm-box h3 { margin-top: 0; font-size: 1rem; color: #495057; }
+        .logic-item { margin: 5px 0; }
+        .highlight-red { color: #e03131; font-weight: bold; }
+        .highlight-green { color: #2b8a3e; font-weight: bold; }
+
+        /* 시뮬레이션 영역 */
+        .simulation-area {
+            border-top: 2px dashed #dee2e6;
+            padding-top: 20px;
         }
         
-        .algorithm-box .result-green {
-            color: #16a34a;
-            font-weight: bold;
+        /* 온도 조절 슬라이더 */
+        input[type=range] {
+            width: 100%;
+            margin: 15px 0;
+            accent-color: #4dabf7;
         }
-        
-        .algorithm-box .result-red {
-            color: #dc2626;
-            font-weight: bold;
-        }
-        
-        /* 온도 입력 */
-        .temp-input-section {
-            margin-bottom: 30px;
-        }
-        
-        .temp-input-section label {
-            display: block;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 12px;
-        }
-        
-        .slider-container {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .slider {
-            flex: 1;
-            height: 12px;
-            border-radius: 6px;
-            background: #e5e7eb;
-            outline: none;
-            -webkit-appearance: none;
-            cursor: pointer;
-        }
-        
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: #3b82f6;
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        }
-        
-        .slider::-moz-range-thumb {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: #3b82f6;
-            cursor: pointer;
-            border: none;
-        }
-        
         .temp-display {
-            text-align: center;
-            min-width: 100px;
-        }
-        
-        .temp-display .number {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: bold;
-            color: #1e3a5f;
+            color: #333;
         }
-        
-        .temp-display .unit {
-            font-size: 1.2rem;
-            color: #64748b;
-        }
-        
-        .slider-labels {
+        .temp-labels {
             display: flex;
             justify-content: space-between;
-            margin-top: 8px;
-            font-size: 0.85rem;
-            color: #9ca3af;
-        }
-        
-        .slider-labels .threshold {
-            color: #dc2626;
-            font-weight: 600;
-        }
-        
-        /* LED 매트릭스 */
-        .led-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-        
-        .led-label {
-            font-size: 0.9rem;
-            color: #6b7280;
-            margin-bottom: 12px;
-        }
-        
-        .microbit {
-            background: #111827;
-            padding: 20px;
-            border-radius: 16px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.3);
-            transition: box-shadow 0.3s ease;
-        }
-        
-        .microbit.green-glow {
-            box-shadow: 0 0 40px rgba(34, 197, 94, 0.4);
-        }
-        
-        .microbit.red-glow {
-            box-shadow: 0 0 40px rgba(239, 68, 68, 0.4);
-        }
-        
-        .led-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
-        }
-        
-        .led {
-            width: 36px;
-            height: 36px;
-            border-radius: 4px;
-            background: #1f2937;
-            transition: all 0.3s ease;
-        }
-        
-        .led.on-green {
-            background: #22c55e;
-            box-shadow: 0 0 12px #22c55e, 0 0 24px #22c55e;
-        }
-        
-        .led.on-red {
-            background: #ef4444;
-            box-shadow: 0 0 12px #ef4444, 0 0 24px #ef4444;
-        }
-        
-        /* 상태 표시 */
-        .status-box {
-            text-align: center;
-            padding: 16px;
-            border-radius: 12px;
-            border: 2px solid;
-            transition: all 0.3s ease;
-        }
-        
-        .status-box.good {
-            background: #dcfce7;
-            border-color: #86efac;
-        }
-        
-        .status-box.bad {
-            background: #fee2e2;
-            border-color: #fca5a5;
-        }
-        
-        .status-box .status-text {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-        
-        .status-box .status-detail {
-            color: #6b7280;
-            font-size: 0.95rem;
-        }
-        
-        /* 프롬프트 정보 */
-        .prompt-card {
-            background: rgba(255,255,255,0.8);
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid #e5e7eb;
-            margin-bottom: 15px;
-        }
-        
-        .prompt-card h3 {
-            color: #374151;
-            font-size: 1rem;
-            margin-bottom: 10px;
-        }
-        
-        .prompt-card .prompt-text {
-            background: #f9fafb;
-            padding: 12px;
-            border-radius: 8px;
-            font-style: italic;
-            color: #4b5563;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-        
-        .prompt-card .question-box {
-            background: #eff6ff;
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 12px;
-            color: #1d4ed8;
-            font-size: 0.9rem;
-        }
-        
-        /* 학습 포인트 */
-        .learning-points {
-            background: #eef2ff;
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid #c7d2fe;
-        }
-        
-        .learning-points h3 {
-            color: #4338ca;
-            font-size: 1rem;
-            margin-bottom: 15px;
-        }
-        
-        .points-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-        
-        .point-item {
-            background: white;
-            padding: 15px 10px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        
-        .point-item .icon {
-            font-size: 1.8rem;
-            margin-bottom: 6px;
-        }
-        
-        .point-item .label {
-            font-weight: 600;
-            color: #374151;
-            font-size: 0.95rem;
-        }
-        
-        .point-item .desc {
-            color: #9ca3af;
             font-size: 0.8rem;
-            margin-top: 2px;
+            color: #868e96;
+            margin-bottom: 20px;
         }
-        
-        /* 푸터 */
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            color: #9ca3af;
+
+        /* 마이크로비트 LED 출력 영역 */
+        .microbit-display {
+            background-color: #000;
+            color: #fff;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 15px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 5rem;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            font-family: 'Courier New', monospace; /* LED 느낌 */
+        }
+        .result-text { font-size: 1.2rem; font-weight: bold; margin-bottom: 20px; }
+
+        /* 하단 선생님 영역 */
+        .teacher-note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            padding: 15px;
+            border-radius: 8px;
             font-size: 0.85rem;
+            color: #856404;
+            text-align: left;
+            margin-top: 20px;
         }
+        .flow-diagram {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #495057;
+        }
+        .flow-item { text-align: center; }
+        .flow-icon { font-size: 1.5rem; display: block; margin-bottom: 5px; }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- 헤더 -->
-        <div class="header">
-            <h1>🌡️ 교실 환기 알리미 시뮬레이션</h1>
-            <p>AI가 만든 시뮬레이션으로 완성형을 미리 확인해요</p>
-            <div class="badge">💡 바이브 코딩으로 제작</div>
-        </div>
+
+<div class="container">
+    <h1>🌡️ 교실 환기 알리미 시뮬레이션</h1>
+    <div class="subtitle">AI가 만든 시뮬레이션으로 완성형을 미리 확인해요</div>
+    <div class="tag">💡 바이브 코딩으로 제작</div>
+
+    <!-- 알고리즘 설명 영역: 요청하신 대로 ✓ 표시를 O로 수정했습니다 [1] -->
+    <div class="algorithm-box">
+        <h3>📋 알고리즘</h3>
+        <div class="logic-item">• 만약 온도 ≥ 26°C 이면</div>
+        <div class="logic-item">&nbsp;&nbsp; → <span class="highlight-red">빨간 LED (✗) 환기 필요</span></div>
+        <div class="logic-item">• 아니면</div>
+        <div class="logic-item">&nbsp;&nbsp; → <span class="highlight-green">초록 LED (O) 쾌적</span></div>
+    </div>
+
+    <div class="simulation-area">
+        <div>🌡️ 현재 온도를 입력하세요</div>
+        <div class="temp-display"><span id="tempValue">24</span>°C</div>
+        <input type="range" id="tempSlider" min="18" max="35" value="24" step="1">
         
-        <!-- 메인 카드 -->
-        <div class="main-card">
-            <!-- 알고리즘 설명 -->
-            <div class="algorithm-box">
-                <h3>📋 알고리즘</h3>
-                <p>• <span class="code">만약</span> 온도 ≥ 26°C <span class="code">이면</span></p>
-                <p style="padding-left: 20px;">→ <span class="result-red">빨간 LED (✗)</span> 환기 필요</p>
-                <p>• <span class="code">아니면</span></p>
-                <p style="padding-left: 20px;">→ <span class="result-green">초록 LED (✓)</span> 쾌적</p>
-            </div>
-            
-            <!-- 온도 입력 -->
-            <div class="temp-input-section">
-                <label>🌡️ 현재 온도를 입력하세요</label>
-                <div class="slider-container">
-                    <input type="range" class="slider" id="tempSlider" min="18" max="35" value="24">
-                    <div class="temp-display">
-                        <span class="number" id="tempNumber">24</span>
-                        <span class="unit">°C</span>
-                    </div>
-                </div>
-                <div class="slider-labels">
-                    <span>18°C</span>
-                    <span class="threshold">기준: 26°C</span>
-                    <span>35°C</span>
-                </div>
-            </div>
-            
-            <!-- LED 매트릭스 -->
-            <div class="led-section">
-                <div class="led-label">마이크로비트 LED 출력</div>
-                <div class="microbit green-glow" id="microbit">
-                    <div class="led-grid" id="ledGrid">
-                        <!-- JavaScript로 생성 -->
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 상태 표시 -->
-            <div class="status-box good" id="statusBox">
-                <div class="status-text" id="statusText">쾌적해요 ✓</div>
-                <div class="status-detail" id="statusDetail">현재 온도: 24°C < 기준 26°C</div>
-            </div>
+        <div class="temp-labels">
+            <span>18°C</span>
+            <span style="color:red; font-weight:bold;">기준: 26°C</span>
+            <span>35°C</span>
         </div>
-        
-        <!-- 프롬프트 정보 -->
-        <div class="prompt-card">
-            <h3>🤖 선생님이 AI에게 요청한 내용</h3>
-            <div class="prompt-text">
-                "온도를 입력하면 26도 미만일 때 초록색 LED, 26도 이상일 때 빨간색 LED가 켜지는 
-                시뮬레이션을 만들어줘. 마이크로비트 LED 매트릭스처럼 보이면 좋겠어."
-            </div>
-            <div class="question-box">
-                💬 <strong>발문:</strong> "AI가 이걸 만들려면 선생님이 어떤 조건을 명확하게 알려줘야 했을까요?"
-            </div>
+
+        <div>마이크로비트 LED 출력</div>
+        <!-- LED 출력 영역: O 또는 X가 표시됩니다 -->
+        <div class="microbit-display" id="ledDisplay">O</div>
+        <div class="result-text" id="resultText" style="color: #2b8a3e;">쾌적해요 O</div>
+    </div>
+
+    <div class="teacher-note">
+        <strong>🤖 선생님이 AI에게 요청한 내용</strong><br>
+        "온도를 입력하면 26도 미만일 때 초록색 LED, 26도 이상일 때 빨간색 LED가 켜지는 시뮬레이션을 만들어줘."<br><br>
+        <strong>💬 발문:</strong> "AI가 이걸 만들려면 선생님이 어떤 조건을 명확하게 알려줘야 했을까요?"
+    </div>
+
+    <div class="flow-diagram">
+        <div class="flow-item">
+            <span class="flow-icon">📥</span>
+            <strong>입력</strong><br>온도 센서
         </div>
-        
-        <!-- 학습 포인트 -->
-        <div class="learning-points">
-            <h3>📚 오늘 배울 내용</h3>
-            <div class="points-grid">
-                <div class="point-item">
-                    <div class="icon">📥</div>
-                    <div class="label">입력</div>
-                    <div class="desc">온도 센서</div>
-                </div>
-                <div class="point-item">
-                    <div class="icon">🧠</div>
-                    <div class="label">처리</div>
-                    <div class="desc">조건문 (만약~이면)</div>
-                </div>
-                <div class="point-item">
-                    <div class="icon">💡</div>
-                    <div class="label">출력</div>
-                    <div class="desc">LED 표시</div>
-                </div>
-            </div>
+        <div class="flow-item">
+            <span class="flow-icon">🧠</span>
+            <strong>처리</strong><br>조건문
         </div>
-        
-        <!-- 푸터 -->
-        <div class="footer">
-            생성형 AI(Claude)를 활용한 바이브 코딩으로 제작되었습니다.
+        <div class="flow-item">
+            <span class="flow-icon">💡</span>
+            <strong>출력</strong><br>LED 표시
         </div>
     </div>
     
-    <script>
-        // LED 패턴 정의 (5x5)
-        const checkPattern = [
-            [0, 0, 0, 0, 1],
-            [0, 0, 0, 1, 0],
-            [1, 0, 1, 0, 0],
-            [0, 1, 0, 0, 0],
-            [0, 0, 0, 0, 0]
-        ];
-        
-        const xPattern = [
-            [1, 0, 0, 0, 1],
-            [0, 1, 0, 1, 0],
-            [0, 0, 1, 0, 0],
-            [0, 1, 0, 1, 0],
-            [1, 0, 0, 0, 1]
-        ];
-        
-        const threshold = 26;
-        
-        // LED 그리드 초기화
-        function initLEDGrid() {
-            const grid = document.getElementById('ledGrid');
-            for (let i = 0; i < 25; i++) {
-                const led = document.createElement('div');
-                led.className = 'led';
-                led.id = 'led' + i;
-                grid.appendChild(led);
-            }
+    <div style="margin-top: 15px; font-size: 0.7rem; color: #adb5bd;">
+        생성형 AI(Claude)를 활용한 바이브 코딩으로 제작되었습니다. [2]
+    </div>
+</div>
+
+<script>
+    const slider = document.getElementById('tempSlider');
+    const tempValue = document.getElementById('tempValue');
+    const ledDisplay = document.getElementById('ledDisplay');
+    const resultText = document.getElementById('resultText');
+
+    // 상태 업데이트 함수
+    function updateDisplay() {
+        const temp = parseInt(slider.value);
+        tempValue.textContent = temp;
+
+        // 알고리즘 로직 적용 [1]
+        // 26도 이상일 때: X 표시 (빨강)
+        if (temp >= 26) {
+            ledDisplay.textContent = '✗';
+            ledDisplay.style.color = '#ff4d4d'; // 빨간색 LED
+            resultText.textContent = '환기 필요 ✗';
+            resultText.style.color = '#e03131';
+        } 
+        // 26도 미만일 때: O 표시 (초록) - 요청사항 반영
+        else {
+            ledDisplay.textContent = 'O';
+            ledDisplay.style.color = '#40c057'; // 초록색 LED
+            resultText.textContent = '쾌적해요 O';
+            resultText.style.color = '#2b8a3e';
         }
-        
-        // LED 업데이트
-        function updateLEDs(pattern, isRed) {
-            const flatPattern = pattern.flat();
-            for (let i = 0; i < 25; i++) {
-                const led = document.getElementById('led' + i);
-                led.className = 'led';
-                if (flatPattern[i] === 1) {
-                    led.classList.add(isRed ? 'on-red' : 'on-green');
-                }
-            }
-            
-            const microbit = document.getElementById('microbit');
-            microbit.className = 'microbit ' + (isRed ? 'red-glow' : 'green-glow');
-        }
-        
-        // 상태 업데이트
-        function updateStatus(temp) {
-            const needsVentilation = temp >= threshold;
-            const statusBox = document.getElementById('statusBox');
-            const statusText = document.getElementById('statusText');
-            const statusDetail = document.getElementById('statusDetail');
-            
-            if (needsVentilation) {
-                statusBox.className = 'status-box bad';
-                statusText.textContent = '환기 필요! 🪟';
-                statusDetail.textContent = '현재 온도: ' + temp + '°C ≥ 기준 ' + threshold + '°C';
-                updateLEDs(xPattern, true);
-            } else {
-                statusBox.className = 'status-box good';
-                statusText.textContent = '쾌적해요 ✓';
-                statusDetail.textContent = '현재 온도: ' + temp + '°C < 기준 ' + threshold + '°C';
-                updateLEDs(checkPattern, false);
-            }
-        }
-        
-        // 슬라이더 이벤트
-        document.getElementById('tempSlider').addEventListener('input', function(e) {
-            const temp = parseInt(e.target.value);
-            document.getElementById('tempNumber').textContent = temp;
-            updateStatus(temp);
-        });
-        
-        // 초기화
-        initLEDGrid();
-        updateStatus(24);
-    </script>
+    }
+
+    // 이벤트 리스너 등록
+    slider.addEventListener('input', updateDisplay);
+
+    // 초기 실행
+    updateDisplay();
+</script>
+
 </body>
 </html>
