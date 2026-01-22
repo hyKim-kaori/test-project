@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🌡️ 교실 환기 알리미 시뮬레이션</title>
     <style>
+        /* (스타일 시트는 기존과 동일하게 유지됩니다) */
         * {
             margin: 0;
             padding: 0;
@@ -23,7 +24,6 @@
             margin: 0 auto;
         }
         
-        /* 헤더 */
         .header {
             text-align: center;
             margin-bottom: 30px;
@@ -50,7 +50,6 @@
             margin-top: 10px;
         }
         
-        /* 메인 카드 */
         .main-card {
             background: white;
             border-radius: 20px;
@@ -59,7 +58,6 @@
             margin-bottom: 20px;
         }
         
-        /* 알고리즘 박스 */
         .algorithm-box {
             background: #fefce8;
             border: 1px solid #fde047;
@@ -98,7 +96,6 @@
             font-weight: bold;
         }
         
-        /* 온도 입력 */
         .temp-input-section {
             margin-bottom: 30px;
         }
@@ -175,7 +172,6 @@
             font-weight: 600;
         }
         
-        /* LED 매트릭스 */
         .led-section {
             display: flex;
             flex-direction: column;
@@ -229,7 +225,6 @@
             box-shadow: 0 0 12px #ef4444, 0 0 24px #ef4444;
         }
         
-        /* 상태 표시 */
         .status-box {
             text-align: center;
             padding: 16px;
@@ -259,7 +254,6 @@
             font-size: 0.95rem;
         }
         
-        /* 프롬프트 정보 */
         .prompt-card {
             background: rgba(255,255,255,0.8);
             border-radius: 12px;
@@ -293,7 +287,6 @@
             font-size: 0.9rem;
         }
         
-        /* 학습 포인트 */
         .learning-points {
             background: #eef2ff;
             border-radius: 12px;
@@ -337,7 +330,6 @@
             margin-top: 2px;
         }
         
-        /* 푸터 */
         .footer {
             text-align: center;
             margin-top: 20px;
@@ -348,25 +340,21 @@
 </head>
 <body>
     <div class="container">
-        <!-- 헤더 -->
         <div class="header">
             <h1>🌡️ 교실 환기 알리미 시뮬레이션</h1>
             <p>AI가 만든 시뮬레이션으로 완성형을 미리 확인해요</p>
             <div class="badge">💡 바이브 코딩으로 제작</div>
         </div>
         
-        <!-- 메인 카드 -->
         <div class="main-card">
-            <!-- 알고리즘 설명 -->
             <div class="algorithm-box">
                 <h3>📋 알고리즘</h3>
                 <p>• <span class="code">만약</span> 온도 ≥ 26°C <span class="code">이면</span></p>
-                <p style="padding-left: 20px;">→ <span class="result-red">빨간 LED (✗)</span> 환기 필요</p>
+                <p style="padding-left: 20px;">→ <span class="result-red">빨간 LED (X)</span> 환기 필요</p>
                 <p>• <span class="code">아니면</span></p>
-                <p style="padding-left: 20px;">→ <span class="result-green">초록 LED (✓)</span> 쾌적</p>
+                <p style="padding-left: 20px;">→ <span class="result-green">초록 LED (O)</span> 쾌적</p>
             </div>
             
-            <!-- 온도 입력 -->
             <div class="temp-input-section">
                 <label>🌡️ 현재 온도를 입력하세요</label>
                 <div class="slider-container">
@@ -383,24 +371,19 @@
                 </div>
             </div>
             
-            <!-- LED 매트릭스 -->
             <div class="led-section">
                 <div class="led-label">마이크로비트 LED 출력</div>
                 <div class="microbit green-glow" id="microbit">
-                    <div class="led-grid" id="ledGrid">
-                        <!-- JavaScript로 생성 -->
-                    </div>
+                    <div class="led-grid" id="ledGrid"></div>
                 </div>
             </div>
             
-            <!-- 상태 표시 -->
             <div class="status-box good" id="statusBox">
-                <div class="status-text" id="statusText">쾌적해요 ✓</div>
+                <div class="status-text" id="statusText">쾌적해요 O</div>
                 <div class="status-detail" id="statusDetail">현재 온도: 24°C < 기준 26°C</div>
             </div>
         </div>
         
-        <!-- 프롬프트 정보 -->
         <div class="prompt-card">
             <h3>🤖 선생님이 AI에게 요청한 내용</h3>
             <div class="prompt-text">
@@ -412,7 +395,6 @@
             </div>
         </div>
         
-        <!-- 학습 포인트 -->
         <div class="learning-points">
             <h3>📚 오늘 배울 내용</h3>
             <div class="points-grid">
@@ -434,88 +416,13 @@
             </div>
         </div>
         
-        <!-- 푸터 -->
         <div class="footer">
-            생성형 AI(Claude)를 활용한 바이브 코딩으로 제작되었습니다.
+            생성형 AI를 활용한 바이브 코딩으로 제작되었습니다.
         </div>
     </div>
     
     <script>
-        // LED 패턴 정의 (5x5)
-        const checkPattern = [
-            [0, 0, 0, 0, 1],
-            [0, 0, 0, 1, 0],
-            [1, 0, 1, 0, 0],
-            [0, 1, 0, 0, 0],
-            [0, 0, 0, 0, 0]
-        ];
-        
-        const xPattern = [
-            [1, 0, 0, 0, 1],
-            [0, 1, 0, 1, 0],
-            [0, 0, 1, 0, 0],
-            [0, 1, 0, 1, 0],
-            [1, 0, 0, 0, 1]
-        ];
-        
-        const threshold = 26;
-        
-        // LED 그리드 초기화
-        function initLEDGrid() {
-            const grid = document.getElementById('ledGrid');
-            for (let i = 0; i < 25; i++) {
-                const led = document.createElement('div');
-                led.className = 'led';
-                led.id = 'led' + i;
-                grid.appendChild(led);
-            }
-        }
-        
-        // LED 업데이트
-        function updateLEDs(pattern, isRed) {
-            const flatPattern = pattern.flat();
-            for (let i = 0; i < 25; i++) {
-                const led = document.getElementById('led' + i);
-                led.className = 'led';
-                if (flatPattern[i] === 1) {
-                    led.classList.add(isRed ? 'on-red' : 'on-green');
-                }
-            }
-            
-            const microbit = document.getElementById('microbit');
-            microbit.className = 'microbit ' + (isRed ? 'red-glow' : 'green-glow');
-        }
-        
-        // 상태 업데이트
-        function updateStatus(temp) {
-            const needsVentilation = temp >= threshold;
-            const statusBox = document.getElementById('statusBox');
-            const statusText = document.getElementById('statusText');
-            const statusDetail = document.getElementById('statusDetail');
-            
-            if (needsVentilation) {
-                statusBox.className = 'status-box bad';
-                statusText.textContent = '환기 필요! 🪟';
-                statusDetail.textContent = '현재 온도: ' + temp + '°C ≥ 기준 ' + threshold + '°C';
-                updateLEDs(xPattern, true);
-            } else {
-                statusBox.className = 'status-box good';
-                statusText.textContent = '쾌적해요 ✓';
-                statusDetail.textContent = '현재 온도: ' + temp + '°C < 기준 ' + threshold + '°C';
-                updateLEDs(checkPattern, false);
-            }
-        }
-        
-        // 슬라이더 이벤트
-        document.getElementById('tempSlider').addEventListener('input', function(e) {
-            const temp = parseInt(e.target.value);
-            document.getElementById('tempNumber').textContent = temp;
-            updateStatus(temp);
-        });
-        
-        // 초기화
-        initLEDGrid();
-        updateStatus(24);
-    </script>
-</body>
-</html>
+        // LED 패턴을 체크(✓)에서 동그라미(O)로 수정
+        const oPattern = [
+            [0, 1, 1, 1, 0],
+            [1, 0
